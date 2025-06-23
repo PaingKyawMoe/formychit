@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Anniversary!</title>
+    <link rel="stylesheet" href="anni.css" />
+  </head>
+  <body>
+    <!-- Floating hearts background -->
+    <div class="floating-hearts" id="floatingHearts"></div>
+
+    <div class="container">
+      <!-- Home Page -->
+      <div class="page active" id="home">
+        <header>
+          <h1>Happy <span class="heart">❤</span> Anniversary!</h1>
+          <div class="anniversary-number" id="yearsTogether">1</div>
+          <p>Years of love, laughter, and wonderful memories</p>
+        </header>
+
+        <div class="message">
+          <p>To my dearest love,</p>
+          <p>
+            As we celebrate our <span id="dynamicYears">1st</span> anniversary,
+            I find myself reflecting on all the beautiful moments we've shared.
+            From our first date to this very day, every moment with you has been
+            a gift.
+          </p>
+          <p>
+            You've brought so much joy, love, and meaning into my life. Through
+            challenges and triumphs, your love has been my constant, my comfort,
+            and my greatest happiness.
+          </p>
+          <p>
+            Here's to many more years of growing together, supporting each
+            other, and creating memories that will last a lifetime. I love you
+            more than words can express.
+          </p>
+          <p>Forever yours,</p>
+          <p id="signature">Chit❤</p>
+        </div>
+
+        <div class="nav-buttons">
+          <button class="btn" id="galleryBtn">Our Photo Gallery</button>
+          <button class="btn" id="memoriesBtn">Special Memories</button>
+          <button class="btn" id="surpriseBtn">Surprise Me!</button>
+        </div>
+      </div>
+
+      <!-- Gallery Page -->
+      <div class="page" id="gallery">
+        <header>
+          <h1>Our <span class="heart">❤</span> Gallery</h1>
+          <h2>Moments Captured Forever</h2>
+        </header>
+
+        <div class="gallery" id="memoryGallery">
+          <!-- Gallery items will be added by JavaScript -->
+        </div>
+
+        <div class="nav-buttons">
+          <button class="btn" id="backFromGalleryBtn">Back to Home</button>
+          <button class="btn" id="memoriesFromGalleryBtn">
+            View Our Memories
+          </button>
+        </div>
+      </div>
+
+      <!-- Memories Page -->
+      <div class="page" id="memories">
+        <header>
+          <h1>Our <span class="heart">❤</span> Journey</h1>
+          <h2>Special Moments Together</h2>
+        </header>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <h3>First Met</h3>
+              <p>The first noticed you in my first year of university.</p>
+              <small>2018</small>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <h3>First Date</h3>
+              <p>
+                When our first date ,I was riding motocycle in the rain and then
+                I finally held your warm hand.
+              </p>
+              <small>July 2018</small>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <h3>First Vacation</h3>
+              <p>
+                Going to Bagan was the happiest time of my life and I had the
+                opportunity to create many memories with my love.
+              </p>
+              <small>January 2024</small>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <h3>Our Hiking</h3>
+              <p>
+                It was also a wonderful moment hiking with you and see nature
+                from above.
+              </p>
+              <small>February 2024</small>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <h3>Our Wedding</h3>
+              <p>
+                Soon, you and I will get married , have a lovely daughter and
+                son,and live a happy life.
+              </p>
+              <small></small>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <h3>Today</h3>
+              <p>
+                From today onwards,we will love more and more each other for
+                many years to come,and we will go through hardships and joys
+                together,my love.
+              </p>
+              <small id="currentMemoryDate"></small>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-buttons">
+          <button class="btn" id="backFromMemoriesBtn">Back to Home</button>
+          <button class="btn" id="galleryFromMemoriesBtn">
+            View Our Gallery
+          </button>
+        </div>
+      </div>
+
+      <footer>
+        <p>Created with love for our special day</p>
+        <p id="currentDate"></p>
+      </footer>
+    </div>
+
+    <script>
+      // JavaScript for interactive elements
+      document.addEventListener("DOMContentLoaded", function () {
+        // Set the anniversary year (change this to your actual anniversary year)
+        // Set your anniversary date (year, month, day - month is 0-indexed)
+        const anniversaryDate = new Date(2019, 2, 27); // May 15, 2018 (month is 0-11)
+        const currentDate = new Date();
+        const yearsTogether =
+          currentDate.getFullYear() - anniversaryDate.getFullYear();
+        const monthsTogether =
+          currentDate.getMonth() - anniversaryDate.getMonth();
+
+        // Calculate total months to handle year boundaries
+        let totalMonths =
+          (currentDate.getFullYear() - anniversaryDate.getFullYear()) * 12;
+        totalMonths += currentDate.getMonth() - anniversaryDate.getMonth();
+
+        // Adjust if current day is before anniversary day
+        if (currentDate.getDate() < anniversaryDate.getDate()) {
+          totalMonths--;
+        }
+
+        const years = Math.floor(totalMonths / 12);
+        const months = totalMonths % 12;
+
+        // Update the year display
+        document.getElementById(
+          "yearsTogether"
+        ).textContent = `${years} years and ${months} months`;
+        // Update the dynamic years text
+        const dynamicYears = document.getElementById("dynamicYears");
+        dynamicYears.textContent = getNumberWithSuffix(yearsTogether);
+
+        // Set current date in footer
+        const options = {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        };
+        document.getElementById("currentDate").textContent =
+          new Date().toLocaleDateString("en-US", options);
+        document.getElementById("currentMemoryDate").textContent =
+          new Date().toLocaleDateString("en-US", options);
+
+        // Create falling hearts
+        function createFallingHearts() {
+          const heart = document.createElement("div");
+          heart.className = "falling-heart";
+          heart.innerHTML = "❤";
+          heart.style.left = Math.random() * 100 + "vw";
+          heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+          heart.style.fontSize = Math.random() * 20 + 10 + "px";
+          heart.style.opacity = Math.random() * 0.5 + 0.5;
+
+          document.body.appendChild(heart);
+
+          // Remove heart after animation completes
+          setTimeout(() => {
+            heart.remove();
+          }, 5000);
+        }
+
+        // Create floating background hearts
+        function createFloatingHearts() {
+          const container = document.getElementById("floatingHearts");
+          const heartCount = 15;
+
+          for (let i = 0; i < heartCount; i++) {
+            const heart = document.createElement("div");
+            heart.className = "floating-heart";
+            heart.innerHTML = "❤";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.top = Math.random() * 100 + "vh";
+            heart.style.animationDuration = Math.random() * 10 + 10 + "s";
+            heart.style.animationDelay = Math.random() * 5 + "s";
+            heart.style.fontSize = Math.random() * 20 + 10 + "px";
+
+            container.appendChild(heart);
+          }
+        }
+
+        // Start falling hearts animation
+        setInterval(createFallingHearts, 300);
+
+        // Create floating background hearts
+        createFloatingHearts();
+
+        // Sample photo gallery (replace with your own images and captions)
+        const photos = [
+          {
+            src: "img/pa3.jpg",
+            caption: "Love Sign",
+          },
+          {
+            src: "img/pa2.jpg",
+            caption: "Her Graduation",
+          },
+          {
+            src: "img/pa5.jpg",
+            caption: "Bagan Trip",
+          },
+          {
+            src: "img/pa4.jpg",
+            caption: "Bagan Trip",
+          },
+          {
+            src: "img/pa7.jpg",
+            caption: "Hiking with Love",
+          },
+          {
+            src: "img/pa6.jpg",
+            caption: "Hiking with Love",
+          },
+          {
+            src: "img/pa9.jpg",
+            caption: "Love Sign",
+          },
+          {
+            src: "img/pa8.jpg",
+            caption: "Love Sign",
+          },
+        ];
+
+        // Populate the gallery
+        const gallery = document.getElementById("memoryGallery");
+        photos.forEach((photo) => {
+          const galleryItem = document.createElement("div");
+          galleryItem.className = "gallery-item";
+
+          const img = document.createElement("img");
+          img.src = photo.src;
+          img.alt = photo.caption;
+
+          const caption = document.createElement("div");
+          caption.className = "gallery-caption";
+          caption.textContent = photo.caption;
+
+          galleryItem.appendChild(img);
+          galleryItem.appendChild(caption);
+          gallery.appendChild(galleryItem);
+        });
+
+        // Navigation between pages
+        document
+          .getElementById("galleryBtn")
+          .addEventListener("click", function () {
+            switchPage("gallery");
+          });
+
+        document
+          .getElementById("memoriesBtn")
+          .addEventListener("click", function () {
+            switchPage("memories");
+          });
+
+        document
+          .getElementById("backFromGalleryBtn")
+          .addEventListener("click", function () {
+            switchPage("home");
+          });
+
+        document
+          .getElementById("backFromMemoriesBtn")
+          .addEventListener("click", function () {
+            switchPage("home");
+          });
+
+        document
+          .getElementById("memoriesFromGalleryBtn")
+          .addEventListener("click", function () {
+            switchPage("memories");
+          });
+
+        document
+          .getElementById("galleryFromMemoriesBtn")
+          .addEventListener("click", function () {
+            switchPage("gallery");
+          });
+
+        // Surprise button functionality
+        document
+          .getElementById("surpriseBtn")
+          .addEventListener("click", function () {
+            createConfetti();
+            createHeartExplosion(this);
+            this.textContent = "I Love You!";
+            setTimeout(() => {
+              this.textContent = "Surprise Me!";
+            }, 2000);
+          });
+
+        // Helper function to get number with suffix (1st, 2nd, 3rd, etc.)
+        function getNumberWithSuffix(num) {
+          if (num >= 11 && num <= 13) {
+            return num + "th";
+          }
+
+          switch (num % 10) {
+            case 1:
+              return num + "st";
+            case 2:
+              return num + "nd";
+            case 3:
+              return num + "rd";
+            default:
+              return num + "th";
+          }
+        }
+
+        // Create confetti effect
+        function createConfetti() {
+          const colors = [
+            "#ff4757",
+            "#ff6b81",
+            "#ff6348",
+            "#ffa502",
+            "#2ed573",
+            "#1e90ff",
+            "#3742fa",
+          ];
+
+          for (let i = 0; i < 150; i++) {
+            const confetti = document.createElement("div");
+            confetti.className = "confetti";
+            confetti.style.left = Math.random() * 100 + "vw";
+            confetti.style.backgroundColor =
+              colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.width = Math.random() * 10 + 5 + "px";
+            confetti.style.height = Math.random() * 10 + 5 + "px";
+            confetti.style.animationDuration = Math.random() * 3 + 2 + "s";
+            confetti.style.animationDelay = Math.random() * 2 + "s";
+
+            // Random shapes
+            if (Math.random() > 0.5) {
+              confetti.style.borderRadius = "50%";
+            }
+
+            document.body.appendChild(confetti);
+
+            setTimeout(() => {
+              confetti.remove();
+            }, 5000);
+          }
+        }
+
+        // Create heart explosion effect
+        function createHeartExplosion(element) {
+          const rect = element.getBoundingClientRect();
+          const x = rect.left + rect.width / 2;
+          const y = rect.top + rect.height / 2;
+
+          for (let i = 0; i < 50; i++) {
+            const heart = document.createElement("div");
+            heart.innerHTML = "❤";
+            heart.style.position = "fixed";
+            heart.style.fontSize = Math.random() * 20 + 10 + "px";
+            heart.style.color = `hsl(${Math.random() * 60 + 330}, 100%, 70%)`;
+            heart.style.left = x + "px";
+            heart.style.top = y + "px";
+            heart.style.opacity = "0";
+            heart.style.zIndex = "1000";
+            heart.style.transform = "translate(-50%, -50%)";
+            heart.style.animation = `explode ${
+              Math.random() * 1 + 0.5
+            }s ease-out forwards`;
+
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+              heart.remove();
+            }, 2000);
+          }
+
+          // Add CSS for explosion animation
+          const style = document.createElement("style");
+          style.innerHTML = `
+                    @keyframes explode {
+                        0% {
+                            transform: translate(-50%, -50%) scale(0);
+                            opacity: 1;
+                        }
+                        100% {
+                            transform: translate(${
+                              Math.random() * 200 - 100
+                            }px, ${Math.random() * 200 - 100}px) scale(1);
+                            opacity: 0;
+                        }
+                    }
+                `;
+          document.head.appendChild(style);
+          setTimeout(() => style.remove(), 2000);
+        }
+
+        // Switch between pages
+        function switchPage(pageId) {
+          // Hide all pages
+          document.querySelectorAll(".page").forEach((page) => {
+            page.classList.remove("active");
+          });
+
+          // Show selected page
+          document.getElementById(pageId).classList.add("active");
+
+          // Scroll to top
+          window.scrollTo(0, 0);
+
+          // Add some confetti when switching to certain pages
+          if (pageId === "memories") {
+            setTimeout(createConfetti, 500);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
